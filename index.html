@@ -1,11 +1,47 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Currency Exchange Rate</title>
-</head>
-<body>
-    <div id="exchangeRate" style="text-align: center;"></div>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <style>
+        @font-face {
+            font-family: 'Pricedown';
+            src: url('Uni Sans Heavy.otf') format('opentype');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Pricedown', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            animation: rainbow 10s linear infinite alternate;
+            background-size: 500% 500%;
+            background-image: linear-gradient(45deg, #e57373, #81C784, #64B5F6, #FFD54F, #FF80AB, #90A4AE);
+        }
+
+        h1 {
+            margin: 0;
+            padding: 0;
+            font-size: 6vw;
+            color: rgb(255, 217, 0);
+            mix-blend-mode: difference;
+        }
+
+        @keyframes rainbow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+    </style>
     <script>
         // Function to fetch data from the API
         function fetchData() {
@@ -14,7 +50,7 @@
                 .then(data => {
                     const baseRate = data.baseRate;
                     const changeRate = data.changeRate;
-                    
+
                     const exchangeRateText = `1 EUR = ${changeRate.toFixed(5)} TRY`;
                     const exchangeRateElement = document.getElementById("exchangeRate");
                     exchangeRateElement.textContent = exchangeRateText;
@@ -27,5 +63,10 @@
         // Call the fetchData function when the page loads
         fetchData();
     </script>
+</head>
+
+<body>
+    <h1 id="exchangeRate">1 EUR = 123 TRY</h1>
 </body>
+
 </html>
