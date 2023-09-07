@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steam - EUR to TRY </title>
+    <title>Steam - EUR to TRY</title>
     <style>
         @font-face {
             font-family: 'Pricedown';
@@ -12,10 +11,12 @@
         }
 
         body {
+            font-size: 50px;
             margin: 0;
             padding: 0;
             font-family: 'Pricedown', sans-serif;
             display: flex;
+            flex-direction: column; /* Display items in a column */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -41,6 +42,25 @@
                 background-position: 100% 50%;
             }
         }
+
+/* Hide number input arrows for WebKit-based browsers */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* Your existing styles */
+input {
+    border: none;
+    background-color: transparent;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+    width: auto; /* Set the width to auto */
+}
+
     </style>
     <script>
         // Function to fetch data from the API
@@ -48,12 +68,38 @@
             fetch("https://www.steamwebapi.com/currency/api/exchange?key=FVBBUXMREVCCFJXO&change=TRY&base=EUR")
                 .then(response => response.json())
                 .then(data => {
-                    const baseRate = data.baseRate;
                     const changeRate = data.changeRate;
 
-                    const exchangeRateText = `1 EUR = ${changeRate.toFixed(5)} TRY`;
-                    const exchangeRateElement = document.getElementById("exchangeRate");
-                    exchangeRateElement.textContent = exchangeRateText;
+                    const eurInput = document.getElementById("eurAmount");
+                    const tryInput = document.getElementById("tryAmount");
+
+                    eurInput.value = 1;
+                    tryInput.value = (1 * changeRate).toFixed(5);
+
+                    // Function to set the width of an input based on its content
+                    function setWidth(input) {
+                        const inputText = input.value || input.getAttribute('placeholder') || '';
+                        const textWidth = (inputText.length*25)+25; // Adjust the factor as needed
+                        input.style.width = textWidth + 'px';
+                    }
+
+                    // Set the initial width based on content
+                    setWidth(eurInput);
+                    setWidth(tryInput);
+
+                    eurInput.oninput = function () {
+                        const eurAmount = parseFloat(eurInput.value);
+                        tryInput.value = (eurAmount * changeRate).toFixed(5);
+                        setWidth(eurInput);
+                        setWidth(tryInput);
+                    };
+
+                    tryInput.oninput = function () {
+                        const tryAmount = parseFloat(tryInput.value);
+                        eurInput.value = (tryAmount / changeRate).toFixed(5);
+                        setWidth(eurInput);
+                        setWidth(tryInput);
+                    };
                 })
                 .catch(error => {
                     console.error("Error fetching data:", error);
@@ -64,9 +110,17 @@
         fetchData();
     </script>
 </head>
-
 <body>
-    <h1 id="exchangeRate">1 EUR = 123 TRY</h1>
+    <h1 id="exchangeRate"></h1>
+    <div>
+        <div>
+            <label for="eurAmount">EUR €</label>
+            <input type="number" id="eurAmount" step="0.01">
+        </div>
+        <div>
+            <label for="tryAmount">TRY&ThickSpace;₺</label>
+            <input type="number" id="tryAmount" step="0.01">
+        </div>
+    </div>
 </body>
-
 </html>
