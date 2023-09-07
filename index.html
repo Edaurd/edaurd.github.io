@@ -11,7 +11,7 @@
         }
 
         body {
-            font-size: 50px;
+            font-size: 8vh;
             margin: 0;
             padding: 0;
             font-family: 'Pricedown', sans-serif;
@@ -25,10 +25,9 @@
             background-image: linear-gradient(45deg, #e57373, #81C784, #64B5F6, #FFD54F, #FF80AB, #90A4AE);
         }
 
-        h1 {
+        label, input {
             margin: 0;
             padding: 0;
-            font-size: 6vw;
             color: rgb(255, 217, 0);
             mix-blend-mode: difference;
         }
@@ -79,7 +78,7 @@ input {
                     // Function to set the width of an input based on its content
                     function setWidth(input) {
                         const inputText = input.value || input.getAttribute('placeholder') || '';
-                        const textWidth = (inputText.length*25)+25; // Adjust the factor as needed
+                        const textWidth = (inputText.length*60); // Adjust the factor as needed
                         input.style.width = textWidth + 'px';
                     }
 
@@ -111,8 +110,7 @@ input {
     </script>
 </head>
 <body>
-    <h1 id="exchangeRate"></h1>
-    <div>
+    <div class="exchange">
         <div>
             <label for="eurAmount">EUR €</label>
             <input type="number" id="eurAmount" step="0.01">
